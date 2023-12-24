@@ -82,5 +82,53 @@ export const part1 = async (inputPath: string) => {
   return [...partNumbers].reduce((sum, { number }) => sum + number, 0);
 };
 
+export const part2 = async (inputPath: string) => {
+  const { schematicNumbersByRow, schematicSymbols } =
+    await parseInput(inputPath);
+
+  const adjacentNumbersByGear = new Map<
+    SchematicSymbol,
+    Set<SchematicNumber>
+  >();
+
+  schematicSymbols.forEach((schematicSymbol) => {
+    if (schematicSymbol.symbol === "*") {
+      const gearNumbers = new Set<SchematicNumber>();
+
+      for (
+        let row = schematicSymbol.row - 1;
+        row <= schematicSymbol.row + 1;
+        ++row
+      ) {
+        const schematicNumbers = schematicNumbersByRow.get(row);
+
+        schematicNumbers?.forEach((schematicNumber) => {
+          if (
+            schematicNumber.column <= schematicSymbol.column + 1 &&
+            schematicNumber.column + schematicNumber.length >=
+              schematicSymbol.column
+          ) {
+            gearNumbers.add(schematicNumber);
+          }
+        });
+      }
+      adjacentNumbersByGear.set(schematicSymbol, gearNumbers);
+    }
+  });
+
+  return [...adjacentNumbersByGear.values()]
+    .filter((schematicNumberSet) => {
+      return schematicNumberSet.size === 2;
+    })
+    .map((schematicNumberSet) => {
+      const [first, second] = [...schematicNumberSet.values()];
+      return first.number * second.number;
+    })
+    .reduce((sum, gearRatio) => sum + gearRatio);
+};
+
 console.log(await part1("./input/example.txt"));
 console.log(await part1("./input/input.txt"));
+
+console.log(await part2("./input/example.txt"));
+console.log(await part2("./input/input.txt"));

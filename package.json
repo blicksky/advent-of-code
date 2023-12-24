@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx src/2023/03",
+    "solve": "tsx scripts/solve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrew Blick <andrew@blicksky.com>",

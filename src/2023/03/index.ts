@@ -126,9 +126,3 @@ export const part2 = async (inputPath: string) => {
     })
     .reduce((sum, gearRatio) => sum + gearRatio);
 };
-
-console.log(await part1("./input/example.txt"));
-console.log(await part1("./input/input.txt"));
-
-console.log(await part2("./input/example.txt"));
-console.log(await part2("./input/input.txt"));
